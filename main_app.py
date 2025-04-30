@@ -15,9 +15,9 @@ tools = [
 ]
 
 # Show tools in button cards
-for tool in tools:
+for i, tool in enumerate(tools):
     with st.container():
         st.markdown(f"### {tool['label']}")
         st.markdown(tool["desc"])
-        if st.button(f"➡ Go to {tool['label'].split(' ')[1]}"):
+        if st.button(f"➡ Go to {tool['label'].split(' ')[1]}", key=f"btn_{i}"):
             st.switch_page(tool['page'])
