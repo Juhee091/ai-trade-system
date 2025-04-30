@@ -1,0 +1,51 @@
+export_country,import_country,hs_code,product,tariff_rate,source,last_updated,base_price_usd,final_price_usd,export_currency,import_currency
+Japan,Korea,8703,Passenger cars,8.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,17296,18679.68,JPY,KRW
+China,Germany,8542,Semiconductors,0.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,11639,11639.0,CNY,EUR
+USA,France,8517,Smartphones,2.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,28024,28584.48,USD,EUR
+Germany,India,8458,Machine tools,7.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,26049,28002.675,EUR,INR
+Italy,Vietnam,8479,Machinery,5.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,24628,25859.4,EUR,VND
+India,USA,6204,Textiles,11.4,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,19144,21326.416,INR,USD
+Korea,Canada,8471,Computers,0.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,16717,16717.0,KRW,CAD
+Australia,China,2701,Coal,3.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,45741,47113.23,AUD,CNY
+Saudi Arabia,Japan,2710,Petroleum products,0.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,15697,15697.0,SAR,JPY
+France,Brazil,8802,Aircraft,4.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,48698,50645.92,EUR,BRL
+Switzerland,Korea,3004,Pharmaceuticals,0.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,37651,37651.0,CHF,KRW
+Russia,Germany,4407,Wood,1.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,12082,12263.23,RUB,EUR
+USA,Mexico,1005,Corn,10.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,11952,13147.2,USD,MXN
+Chile,China,7403,Refined copper,2.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,16140,16462.8,CLP,CNY
+Thailand,Netherlands,2106,Food preparations,6.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,24328,25787.68,THB,EUR
+Japan,Korea,4407,Wood,4.1,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,25247,26282.127,JPY,KRW
+India,Germany,4407,Wood,1.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,43118,43764.77,INR,EUR
+Saudi Arabia,China,8802,Aircraft,6.3,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,49453,52568.539,SAR,CNY
+Korea,China,8458,Machine tools,3.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,11739,12149.865,KRW,CNY
+Netherlands,Korea,2710,Petroleum products,3.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,46781,48184.43,EUR,KRW
+Saudi Arabia,Chile,8458,Machine tools,6.7,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,23031,24574.077,SAR,CLP
+Vietnam,Korea,1005,Corn,12.1,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,45713,51244.273,VND,KRW
+Chile,Mexico,8479,Machinery,2.3,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,37493,38355.339,CLP,MXN
+Mexico,Japan,8542,Semiconductors,5.7,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,24446,25839.422,MXN,JPY
+Brazil,Netherlands,8802,Aircraft,4.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,39439,41016.560000000005,BRL,EUR
+USA,Australia,2710,Petroleum products,1.9,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,48618,49541.742,USD,AUD
+Canada,China,2710,Petroleum products,4.4,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,28231,29473.164,CAD,CNY
+Netherlands,Brazil,8802,Aircraft,2.9,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,10425,10727.325,EUR,BRL
+China,USA,3004,Pharmaceuticals,3.4,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,20463,21158.742,CNY,USD
+Poland,China,7403,Refined copper,3.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,37696,39015.36,PLN,CNY
+Japan,Canada,8479,Machinery,6.8,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,32298,34494.264,JPY,CAD
+Brazil,France,6204,Textiles,5.3,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,28210,29705.13,BRL,EUR
+Vietnam,China,8802,Aircraft,9.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,20189,22106.955,VND,CNY
+Saudi Arabia,India,8517,Smartphones,6.9,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,24110,25773.59,SAR,INR
+Vietnam,Saudi Arabia,8458,Machine tools,10.3,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,32059,35361.077,VND,SAR
+USA,India,7403,Refined copper,0.5,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,16698,16781.489999999998,USD,INR
+Mexico,Canada,8479,Machinery,1.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,16078,16238.78,MXN,CAD
+Turkey,Mexico,8458,Machine tools,9.8,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,34898,38318.004,TRY,MXN
+Canada,Australia,8517,Smartphones,4.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,16338,16991.52,CAD,AUD
+India,Saudi Arabia,2710,Petroleum products,3.9,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,33526,34833.514,INR,SAR
+Turkey,Chile,2106,Food preparations,8.8,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,32541,35404.608,TRY,CLP
+Brazil,India,8517,Smartphones,7.6,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,49565,53331.94,BRL,INR
+China,USA,7403,Refined copper,1.6,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,27335,27772.36,CNY,USD
+France,Chile,8802,Aircraft,1.0,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,12847,12975.47,EUR,CLP
+Canada,Australia,2710,Petroleum products,3.8,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,40108,41632.104,CAD,AUD
+Saudi Arabia,Korea,3004,Pharmaceuticals,10.8,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,45142,50017.336,SAR,KRW
+Saudi Arabia,Vietnam,1005,Corn,9.6,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,18180,19925.28,SAR,VND
+Japan,Poland,8471,Computers,2.4,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,34807,35642.368,JPY,PLN
+Korea,Vietnam,2710,Petroleum products,11.4,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,15164,16892.696,KRW,VND
+UAE,Japan,7403,Refined copper,9.4,macmap.org (manually reviewed or estimated),2025-04-30 15:38:32.948134,46178,50518.732,AED,JPY
