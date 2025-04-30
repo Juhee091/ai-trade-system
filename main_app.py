@@ -1,23 +1,18 @@
 import streamlit as st
-import base64
 
-st.set_page_config(page_title="AI Trade System", layout="centered")
-st.title("🌐 Welcome to the AI Trade Toolkit")
-st.markdown("Choose a tool below to get started:")
+st.set_page_config(page_title="AI Trade Toolkit", layout="centered")
 
-# Define tool options as cards
-tools = [
-    {"label": "💱 Exchange Rate Converter", "desc": "Convert trade prices using real-time exchange rates.", "page": "exchange_converter.py"},
-    {"label": "📈 Exchange Forecast", "desc": "Predict exchange rate trends for the next 30 days.", "page": "exchange_forecast_app.py"},
-    {"label": "🔁 Scenario Analysis", "desc": "Analyze how tariff and FX rate shifts affect trade price.", "page": "scenario_analysis_app.py"},
-    {"label": "🤖 Trade Chatbot", "desc": "Ask questions about tariffs, prices, and trade suggestions.", "page": "trade_chatbot_app.py"},
-    {"label": "🚨 Risk Alerts", "desc": "Get warnings if tariffs or exchange rates are risky.", "page": "risk_alert_module.py"}
-]
+st.title("🌐 AI Trade Toolkit")
+st.markdown("Welcome to your AI-powered international trade assistant. Choose a tool to begin:")
 
-# Show tools in button cards
-for i, tool in enumerate(tools):
-    with st.container():
-        st.markdown(f"### {tool['label']}")
-        st.markdown(tool["desc"])
-        if st.button(f"➡ Go to {tool['label'].split(' ')[1]}", key=f"btn_{i}"):
-            st.switch_page(tool['page'])
+st.divider()
+
+st.page_link("pages/1_💱_Exchange_Converter.py", label="💱 Exchange Converter", icon="💱")
+st.page_link("pages/2_📈_Exchange_Forecast.py", label="📈 Exchange Forecast", icon="📈")
+st.page_link("pages/3_🔁_Scenario_Analysis.py", label="🔁 Scenario Analysis", icon="🔁")
+st.page_link("pages/4_🤖_Trade_Chatbot.py", label="🤖 Trade Chatbot", icon="🤖")
+st.page_link("pages/5_🚨_Risk_Alerts.py", label="🚨 Risk Alerts", icon="🚨")
+
+st.divider()
+st.caption("Developed by Juhee Kim | AI & Data-Driven Global Trade Insights")
+
