@@ -1,110 +1,93 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import spacy
 
-# Load tariff data
+nlp = spacy.load("en_core_web_sm")
+
 @st.cache_data
 def load_data():
     return pd.read_csv("tariff_prices_with_currency_codes.csv")
 
 df = load_data()
 
-st.set_page_config(page_title="Trade Assistant Chatbot", layout="centered")
-st.title("Trade Assistant Chatbot (with Scenarios & Charts)")
+st.set_page_config(page_title="Improved Trade Chatbot", layout="centered")
+st.title("Smarter Trade Assistant Chatbot")
 
-# Guide for users
 with st.expander("How to ask questions (Click to expand)"):
     st.markdown("""
-    You can ask questions like:
-    - **Korea to Germany for passenger cars**
-    - **What if Korea exports computers to US with stronger USD?**
-    - **Germany → France for wheat, lower tariffs**
-    - **Exporting meat from Brazil to Japan with weaker USD**
-    
-    The chatbot can understand:
-    - Export and import countries
-    - Products
-    - Scenarios: stronger/weaker currency, higher/lower tariffs
+    Try:
+    - Exporting wheat from Korea to Japan
+    - Cars from Germany to US with stronger USD
+    - What if Brazil exports meat to France with lower tariffs?
     """)
 
-# Chat input
 user_input = st.chat_input("Ask about tariffs, prices, or what-if scenarios:")
 
-# Define keyword-based parser
-def parse_question(text):
+def smart_parse(text):
+    doc = nlp(text)
     countries = list(set(df["export_country"]).union(set(df["import_country"])))
     products = list(df["product"].unique())
 
-    export_country = next((c for c in countries if c.lower() in text.lower()), None)
-    import_country = next((c for c in countries if c.lower() in text.lower() and c != export_country), None)
+    export_country = None
+    import_country = None
+    product = None
 
-    product = next((p for p in products if p.lower() in text.lower()), None)
-    if not product:
-        product = next((p for p in products if any(word in text.lower() for word in p.lower().split())), None)
+    found = [ent.text for ent in doc.ents if ent.text in countries]
+    if len(found) >= 2:
+        export_country, import_country = found[0], found[1]
+    elif len(found) == 1:
+        export_country = found[0]
 
-    is_stronger_currency = "stronger" in text.lower() or "lower usd" in text.lower()
-    is_weaker_currency = "weaker" in text.lower() or "higher usd" in text.lower()
-    scenario_flag = is_stronger_currency or is_weaker_currency
+    for token in doc:
+        for p in products:
+            if p.lower() in token.text.lower():
+                product = p
+                break
 
-    return export_country, import_country, product, scenario_flag
+    is_stronger = "stronger" in text.lower() or "lower usd" in text.lower()
+    is_weaker = "weaker" in text.lower() or "higher usd" in text.lower()
+    return export_country, import_country, product, is_stronger or is_weaker
 
-# Scenario calculation
-def calculate_scenarios(base_price, base_tariff, base_exchange):
-    scenarios = [
-        {"name": "Base", "tariff": base_tariff, "exchange": base_exchange},
-        {"name": "Lower Tariff", "tariff": base_tariff - 2, "exchange": base_exchange},
-        {"name": "Higher Tariff", "tariff": base_tariff + 3, "exchange": base_exchange},
-        {"name": "Stronger Currency", "tariff": base_tariff, "exchange": base_exchange - 100},
-        {"name": "Weaker Currency", "tariff": base_tariff, "exchange": base_exchange + 100},
-        {"name": "Low Tariff + Stronger", "tariff": base_tariff - 2, "exchange": base_exchange - 100},
-        {"name": "High Tariff + Weaker", "tariff": base_tariff + 3, "exchange": base_exchange + 100},
-    ]
-    results = []
-    for s in scenarios:
-        t_price = base_price * (1 + s["tariff"] / 100)
-        final = t_price * s["exchange"]
-        results.append({"Scenario": s["name"], "Final Price": round(final, 2)})
-    return pd.DataFrame(results)
+def calculate_scenarios(price, tariff, rate):
+    return pd.DataFrame([
+        {"Scenario": "Base", "Final Price": round(price * (1 + tariff/100) * rate, 2)},
+        {"Scenario": "Lower Tariff", "Final Price": round(price * (1 + (tariff - 2)/100) * rate, 2)},
+        {"Scenario": "Higher Tariff", "Final Price": round(price * (1 + (tariff + 3)/100) * rate, 2)},
+        {"Scenario": "Stronger Currency", "Final Price": round(price * (1 + tariff/100) * (rate - 100), 2)},
+        {"Scenario": "Weaker Currency", "Final Price": round(price * (1 + tariff/100) * (rate + 100), 2)},
+    ])
 
-# Main chatbot logic
-def generate_response(export_country, import_country, product, show_scenario):
+def generate_response(export_country, import_country, product, scenario):
     if not all([export_country, import_country, product]):
-        return "❌ I couldn't recognize the countries or product. Please try again.", None
+        return "❌ I couldn't recognize the countries or product.", None
 
-    match = df[(df["export_country"] == export_country) &
-               (df["import_country"] == import_country) &
-               (df["product"].str.lower() == product.lower())]
+    row = df[(df["export_country"] == export_country) &
+             (df["import_country"] == import_country) &
+             (df["product"].str.lower() == product.lower())]
 
-    if match.empty:
+    if row.empty:
         return "❌ No matching trade route found.", None
 
-    row = match.iloc[0]
+    row = row.iloc[0]
     base_price = row['base_price_usd']
     base_tariff = row['tariff_rate']
-    base_exchange = row.get('exchange_rate_usd_to_local', 1300)
+    rate = row.get('exchange_rate_usd_to_local', 1300)
 
-    response = (
+    msg = (
         f"🔍 **{export_country} → {import_country}**\n"
         f"**Product**: {product}\n"
-        f"**Tariff Rate**: {base_tariff}%\n"
-        f"**Base Price**: ${base_price} USD\n"
-        f"**Estimated Local Price**: ≈ {row['final_price_usd'] * base_exchange:.2f} {row['import_currency']}"
+        f"**Tariff**: {base_tariff}%\n"
+        f"**Base Price**: ${base_price}\n"
+        f"**Estimated Local**: ≈ {row['final_price_usd'] * rate:.2f} {row['import_currency']}"
     )
+    return msg, calculate_scenarios(base_price, base_tariff, rate) if scenario else None
 
-    scenario_df = None
-    if show_scenario:
-        scenario_df = calculate_scenarios(base_price, base_tariff, base_exchange)
-
-    return response, scenario_df
-
-# Run chatbot
 if user_input:
-    export_country, import_country, product, is_scenario = parse_question(user_input)
-    answer, scenario_df = generate_response(export_country, import_country, product, is_scenario)
-    st.markdown(answer)
-
-    if scenario_df is not None:
+    ec, ic, prod, sflag = smart_parse(user_input)
+    ans, df_plot = generate_response(ec, ic, prod, sflag)
+    st.markdown(ans)
+    if df_plot is not None:
         st.markdown("### Scenario Comparison")
-        st.dataframe(scenario_df)
-        fig = px.bar(scenario_df, x="Scenario", y="Final Price", text="Final Price")
-        st.plotly_chart(fig)
+        st.dataframe(df_plot)
+        st.plotly_chart(px.bar(df_plot, x="Scenario", y="Final Price", text="Final Price"))
