@@ -21,17 +21,27 @@ def get_exchange_rate(from_currency: str, to_currency: str) -> float:
     if from_currency == to_currency:
         return 1.0
     url = f"https://api.exchangerate.host/convert?from={from_currency}&to={to_currency}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()["result"]
-    return None
+    try:
+        response = requests.get(url, timeout=5)
+        data = response.json()
+        if response.status_code == 200 and "result" in data:
+            return data["result"]
+        else:
+            return None
+    except Exception as e:
+        return None
 
-# Apply exchange rate
+# Get rate
 rate = get_exchange_rate("USD", selected_currency)
-df[f"final_price_in_{selected_currency}"] = df["final_price_usd"] * rate
 
-# Display results
-st.markdown(f"### Current Exchange Rate\n1 USD = {rate:.2f} {selected_currency}")
-st.dataframe(df[[
-    "import_country", "product", "final_price_usd", f"final_price_in_{selected_currency}"
-]])
+if rate is None:
+    st.error("⚠️ Failed to fetch exchange rate. Please try again later or check the currency code.")
+else:
+    df[f"final_price_in_{selected_currency}"] = (df["final_price_usd"] * rate).round(2)
+    
+    # Display results
+    st.markdown(f"### Current Exchange Rate\n1 USD = {rate:.2f} {selected_currency}")
+    st.dataframe(df[[
+        "import_country", "product", "final_price_usd", f"final_price_in_{selected_currency}"
+    ]])
+
