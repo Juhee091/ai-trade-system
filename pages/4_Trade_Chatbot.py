@@ -11,7 +11,7 @@ def load_data():
 
 df = load_data()
 
-st.title("💬 Trade Chatbot with Debug Mode")
+st.title("Trade Chatbot with Debug Mode")
 
 with st.expander("📘 How to ask questions (Click to expand)"):
     st.markdown("""
