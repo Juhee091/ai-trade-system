@@ -11,22 +11,22 @@ def load_data():
 
 df = load_data()
 
-st.title("💬 Smart Trade Chatbot with Prediction")
+st.title("💬 Trade Chatbot with Debug Mode")
 
 with st.expander("📘 How to ask questions (Click to expand)"):
     st.markdown("""
-    Try questions like:
-    - Exporting wheat from Koreaa to Japn
-    - Ship meat from Brazil to Frnace with higher USD
-    - Korea sells cars to Germany lower tariff
+    Ask things like:
+    - Korea exports wheat to Japan
+    - Germany → US cars with weaker USD
+    - Lower tariffs on coffee from Brazil to France
 
-    This chatbot auto-detects:
-    - Misspelled country/product names
-    - Stronger/weaker currency context
-    - Tariff change scenarios
+    This chatbot tries to recognize:
+    - Export/import countries
+    - Product names
+    - Economic scenarios (tariff/currency change)
     """)
 
-user_input = st.chat_input("Ask about tariffs, prices, or what-if scenarios:")
+user_input = st.chat_input("Ask your trade-related question:")
 
 def fuzzy_match(word, candidates, cutoff=0.6):
     matches = get_close_matches(word.lower(), [c.lower() for c in candidates], n=1, cutoff=cutoff)
@@ -36,7 +36,7 @@ def fuzzy_match(word, candidates, cutoff=0.6):
                 return c
     return None
 
-def parse_with_prediction(text):
+def parse_with_debug(text):
     countries = list(set(df["export_country"]).union(set(df["import_country"])))
     products = list(df["product"].unique())
 
@@ -79,14 +79,20 @@ def calculate_scenarios(base_price, base_tariff, base_exchange):
 
 def generate_response(export_country, import_country, product, show_scenario):
     if not all([export_country, import_country, product]):
-        return "❌ I couldn't recognize the countries or product.", None
+        debug_msg = (
+            f"🛠️ Recognized:\n"
+            f"- Export Country: {export_country}\n"
+            f"- Import Country: {import_country}\n"
+            f"- Product: {product}"
+        )
+        return f"❌ Incomplete input. Please check.\n\n{debug_msg}", None
 
     match = df[(df["export_country"] == export_country) &
                (df["import_country"] == import_country) &
                (df["product"].str.lower() == product.lower())]
 
     if match.empty:
-        return "❌ No matching trade route found.", None
+        return f"❌ No trade route found for **{export_country} → {import_country} : {product}**", None
 
     row = match.iloc[0]
     base_price = row["base_price_usd"]
@@ -105,11 +111,13 @@ def generate_response(export_country, import_country, product, show_scenario):
     return response, scenario_df
 
 if user_input:
-    export_country, import_country, product, is_scenario = parse_with_prediction(user_input)
-    answer, scenario_df = generate_response(export_country, import_country, product, is_scenario)
+    ec, ic, prod, sflag = parse_with_debug(user_input)
+    st.markdown(f"🧠 Parsed:\n- Export Country: `{ec}`\n- Import Country: `{ic}`\n- Product: `{prod}`")
+
+    answer, df_scenario = generate_response(ec, ic, prod, sflag)
     st.markdown(answer)
 
-    if scenario_df is not None:
+    if df_scenario is not None:
         st.markdown("### Scenario Comparison")
-        st.dataframe(scenario_df)
-        st.plotly_chart(px.bar(scenario_df, x="Scenario", y="Final Price", text="Final Price"))
+        st.dataframe(df_scenario)
+        st.plotly_chart(px.bar(df_scenario, x="Scenario", y="Final Price", text="Final Price"))
