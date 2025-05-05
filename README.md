@@ -15,7 +15,7 @@ This project was built to provide a data-driven way to help users simulate, fore
 | 📈 Exchange Forecast | Forecast USD to other currency trends using time-series models |
 | 🔁 Scenario Analysis | Evaluate how price changes with different tariff and FX rate scenarios |
 | 🤖 Trade Chatbot | Ask questions and get automated, context-aware responses |
-| 🚨 Risk Alerts | Get notified if your trade route involves excessive tariffs or volatile exchange rates |
+| 🚨 Risk Dashboard | Get notified if your trade route involves excessive tariffs or volatile exchange rates |
 
 ## 🖥 Demo
 
