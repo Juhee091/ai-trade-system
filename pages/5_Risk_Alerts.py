@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from datetime import date, timedelta
 
 st.set_page_config(page_title="Trade Risk Dashboard", layout="wide")
-st.title("📊 Trade Risk Dashboard")
+st.title("Trade Risk Dashboard")
 st.markdown("This dashboard combines individual route risk alerts with a global heatmap overview.")
 
 # Load data
@@ -77,7 +77,7 @@ with col2:
         st.info(f"ℹ️ Exchange Rate Stable: {exchange_diff}% difference")
 
 # ------------------ Section 2: Global Risk Heatmap ------------------
-st.header("🌍 Global Trade Route Risk Heatmap")
+st.header("Global Trade Route Risk Heatmap")
 
 def calculate_risk_score(row, tariff_threshold=10.0, exchange_threshold=5.0):
     tariff_score = 1 if row["tariff_rate"] > tariff_threshold else 0
@@ -106,7 +106,7 @@ fig = go.Figure(data=go.Heatmap(
     colorbar=dict(title="Risk Score")
 ))
 fig.update_layout(
-    title="🔥 Risk Heatmap (Top 10 Export/Import Countries)",
+    title="Risk Heatmap (Top 10 Export/Import Countries)",
     xaxis_title="Import Country",
     yaxis_title="Export Country"
 )
