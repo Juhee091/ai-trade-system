@@ -3,13 +3,14 @@ import pandas as pd
 import plotly.express as px
 from difflib import get_close_matches
 
+st.set_page_config(page_title="Predictive Trade Assistant", layout="centered")
+
 @st.cache_data
 def load_data():
     return pd.read_csv("tariff_prices_with_currency_codes.csv")
 
 df = load_data()
 
-st.set_page_config(page_title="Predictive Trade Assistant", layout="centered")
 st.title("💬 Smart Trade Chatbot with Prediction")
 
 with st.expander("📘 How to ask questions (Click to expand)"):
