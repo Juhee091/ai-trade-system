@@ -9,11 +9,26 @@ def load_data():
 
 df = load_data()
 
-st.title("💬 Trade Assistant Chatbot (with Scenarios & Charts)")
-st.markdown("Ask about tariffs, prices, or what-if scenarios.\nExample: *Korea to Germany for Passenger cars with higher USD*")
+st.set_page_config(page_title="Trade Assistant Chatbot", layout="centered")
+st.title("Trade Assistant Chatbot (with Scenarios & Charts)")
+
+# Guide for users
+with st.expander("How to ask questions (Click to expand)"):
+    st.markdown("""
+    You can ask questions like:
+    - **Korea to Germany for passenger cars**
+    - **What if Korea exports computers to US with stronger USD?**
+    - **Germany → France for wheat, lower tariffs**
+    - **Exporting meat from Brazil to Japan with weaker USD**
+    
+    The chatbot can understand:
+    - Export and import countries
+    - Products
+    - Scenarios: stronger/weaker currency, higher/lower tariffs
+    """)
 
 # Chat input
-user_input = st.text_input("Your question:")
+user_input = st.chat_input("Ask about tariffs, prices, or what-if scenarios:")
 
 # Define keyword-based parser
 def parse_question(text):
@@ -22,9 +37,11 @@ def parse_question(text):
 
     export_country = next((c for c in countries if c.lower() in text.lower()), None)
     import_country = next((c for c in countries if c.lower() in text.lower() and c != export_country), None)
-    product = next((p for p in products if p.lower() in text.lower()), None)
 
-    # Detect modifiers
+    product = next((p for p in products if p.lower() in text.lower()), None)
+    if not product:
+        product = next((p for p in products if any(word in text.lower() for word in p.lower().split())), None)
+
     is_stronger_currency = "stronger" in text.lower() or "lower usd" in text.lower()
     is_weaker_currency = "weaker" in text.lower() or "higher usd" in text.lower()
     scenario_flag = is_stronger_currency or is_weaker_currency
@@ -52,7 +69,7 @@ def calculate_scenarios(base_price, base_tariff, base_exchange):
 # Main chatbot logic
 def generate_response(export_country, import_country, product, show_scenario):
     if not all([export_country, import_country, product]):
-        return "❌ I couldn't recognize the countries or product. Please try again."
+        return "❌ I couldn't recognize the countries or product. Please try again.", None
 
     match = df[(df["export_country"] == export_country) &
                (df["import_country"] == import_country) &
@@ -64,9 +81,8 @@ def generate_response(export_country, import_country, product, show_scenario):
     row = match.iloc[0]
     base_price = row['base_price_usd']
     base_tariff = row['tariff_rate']
-    base_exchange = row['exchange_rate_usd_to_local'] if 'exchange_rate_usd_to_local' in row else 1300
+    base_exchange = row.get('exchange_rate_usd_to_local', 1300)
 
-    # Base response
     response = (
         f"🔍 **{export_country} → {import_country}**\n"
         f"**Product**: {product}\n"
