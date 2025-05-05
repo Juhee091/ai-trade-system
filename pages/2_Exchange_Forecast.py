@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 from prophet import Prophet
 import plotly.express as px
+from datetime import date
 
 st.set_page_config(page_title="Exchange Rate Forecast", layout="centered")
 st.title("Exchange Rate Forecast (USD → Selected Currency)")
@@ -17,13 +18,15 @@ target_currency = st.selectbox("Select a target currency:", currencies)
 # 2. Load time series data from Frankfurter API
 @st.cache_data
 def fetch_frankfurter_data(target):
-    url = f"https://api.frankfurter.app/2023-01-01..2024-01-01?from=USD&to={target}"
+    end_date = date.today().isoformat()
+    start_date = "2023-01-01"
+    url = f"https://api.frankfurter.app/{start_date}..{end_date}?from=USD&to={target}"
     try:
         response = requests.get(url, timeout=10)
         data = response.json()
         if "rates" not in data:
             return None
-        records = [(date, rate[target]) for date, rate in data["rates"].items()]
+        records = [(day, rate[target]) for day, rate in data["rates"].items()]
         df = pd.DataFrame(records, columns=["ds", "y"])
         df["ds"] = pd.to_datetime(df["ds"])
         return df.sort_values("ds")
