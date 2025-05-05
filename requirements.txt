@@ -6,3 +6,4 @@ prophet
 cmdstanpy
 numpy
 matplotlib
+spacy
